@@ -11,11 +11,9 @@ import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
 import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Implementación de la interfaz BlueprintsPersistence que almacena Blueprints en memoria.
@@ -24,7 +22,7 @@ import java.util.Set;
 @Qualifier("Memory")
 public class InMemoryBlueprintPersistence implements BlueprintsPersistence {
 
-    private final Map<Tuple<String, String>, Blueprint> blueprints = new HashMap<>();
+    private final ConcurrentHashMap<Tuple<String,String>,Blueprint> blueprints=new ConcurrentHashMap<>();
 
     public InMemoryBlueprintPersistence() {
         Point[] pts = new Point[]{new Point(140, 140), new Point(115, 115)};
