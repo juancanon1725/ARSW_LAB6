@@ -5,19 +5,27 @@
  */
 package edu.eci.arsw.blueprints.controllers;
 
-import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import edu.eci.arsw.blueprints.model.Blueprint;
-import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
-import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
-import edu.eci.arsw.blueprints.services.BlueprintsServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import edu.eci.arsw.blueprints.model.Blueprint;
+import edu.eci.arsw.blueprints.model.Point;
+import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
+import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
+import edu.eci.arsw.blueprints.services.BlueprintsServices;
 
 @RestController
 @RequestMapping(value = "/blueprints")
@@ -54,6 +62,32 @@ public class BlueprintAPIController {
             return new ResponseEntity<>("Error",HttpStatus.NOT_FOUND);
         }
     }
+
+    @RequestMapping(value = "/addBlueprint", method = RequestMethod.POST, consumes = "application/json")
+    public ResponseEntity<?> postBlueprintResourceHandler(@RequestBody Blueprint bp) {
+        ResponseEntity<?> mensaje;
+        try {
+            bps.addNewBlueprint(bp);
+            mensaje = new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (BlueprintPersistenceException e) {
+            Logger.getLogger(BlueprintAPIController.class.getName()).log(Level.SEVERE, null, e);
+            mensaje = new ResponseEntity<>("El nombre del plano ya existe", HttpStatus.NOT_ACCEPTABLE);
+        }
+        return mensaje;
+    }
+
+    @PutMapping(value = "/{author}/{bpname}")
+    public ResponseEntity<?> manejadorPutRecursoBluePrint(@PathVariable String author, @PathVariable String bpname, @RequestBody List<Point> points) {
+       ResponseEntity<?> mensaje;
+       try {
+           bps.updateBluePrint(author, bpname, points);
+           Blueprint bp = bps.getBlueprint(author, bpname);
+           mensaje = new ResponseEntity<>(bp, HttpStatus.ACCEPTED);
+       } catch (BlueprintNotFoundException e) {
+           mensaje = new ResponseEntity<>("No existe el plano con el nombre dado", HttpStatus.NOT_FOUND);
+       }
+       return mensaje;
+   }
 
 }
 

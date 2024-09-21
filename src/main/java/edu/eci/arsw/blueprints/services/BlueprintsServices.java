@@ -3,15 +3,18 @@
  */
 package edu.eci.arsw.blueprints.services;
 
-import edu.eci.arsw.blueprints.model.Blueprint;
-import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
-import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
-import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import edu.eci.arsw.blueprints.model.Blueprint;
+import edu.eci.arsw.blueprints.model.Point;
+import edu.eci.arsw.blueprints.persistence.BlueprintNotFoundException;
+import edu.eci.arsw.blueprints.persistence.BlueprintPersistenceException;
+import edu.eci.arsw.blueprints.persistence.BlueprintsPersistence;
 
 /**
  * Esta clase representa los servicios relacionados con los blueprints.
@@ -68,6 +71,21 @@ public class BlueprintsServices {
      */
     public Blueprint getBlueprint(String author, String name) throws BlueprintNotFoundException {
         return bpp.getBlueprint(author, name);
+    }
+
+    /**
+     * Actualiza un blueprint existente.
+     *
+     * @param author El autor del blueprint.
+     * @param bpname El nombre del blueprint.
+     * @param points La nueva lista de puntos.
+     * @throws BlueprintNotFoundException Si no existe el blueprint especificado.
+     */
+    public void updateBluePrint(String author, String bpname, List<Point> points) throws BlueprintNotFoundException {
+        Blueprint bp = getBlueprint(author,bpname);
+        System.out.println("Before: "+bp.toString());
+        bp.setPoints(points);
+        System.out.println("After: "+bp.toString());
     }
 
 
