@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Blueprints</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Enlace a Bootstrap CSS -->
+    <link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+    <!-- Enlace a tu archivo CSS personalizado (si lo tienes) -->
+    <!-- <link rel="stylesheet" href="css/tu_estilo.css" /> -->
+
+    <!-- Enlace a jQuery -->
+    <script src="/webjars/jquery/3.1.0/jquery.min.js"></script>
+
+    <!-- Enlace a Bootstrap JavaScript -->
+    <script src="/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <!-- Enlace a tus archivos de JavaScript personalizados -->
+    <script src="js/apimock.js"></script>
+    <script src="js/apiclient.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Estilos adicionales -->
+    <style>
+        .container {
+            margin-top: 20px;
+        }
+        .table {
+            width: 100%;
+            margin-top: 20px;
+        }
+        .total-points {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+<!-- Encabezado con estilo Bootstrap -->
+<div class="container">
+    <div class="page-header">
+        <h1>Blueprints</h1>
+    </div>
+</div>
+
+<!-- Formulario para capturar el autor -->
+<div class="container">
+    <form id="blueprint-form">
+        <div class="form-group">
+            <label for="AuthorInput">Author</label>
+            <input
+                    id="AuthorInput"
+                    class="form-control"
+                    name="Author"
+                    type="text"
+                    placeholder="Enter author name"
+                    required>
+        </div>
+        <button
+                type="submit"
+                id="GetBlueprintsButton"
+                class="btn btn-primary">
+            Get Blueprints
+        </button>
+    </form>
+</div>
+
+<!-- Tabla para mostrar los blueprints -->
+<div class="container">
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="text-center">Blueprint Name</th>
+            <th class="text-center">Number of Points</th>
+            <th class="text-center">Open</th>
+        </tr>
+        </thead>
+        <tbody id="blueprints-table-body">
+        <!-- Las filas de la tabla se agregarán dinámicamente -->
+        </tbody>
+    </table>
+
+    <!-- Campo para mostrar el total de puntos -->
+    <div class="text-center total-points">
+        <span id="blueprintsPointsLabel">Total User Points:</span>
+        <span id="totalPoints" class="label label-success">0</span>
+    </div>
+</div>
+
+<!-- Script para manejar el formulario -->
+<script>
+    $(document).ready(function () {
+        $('#blueprint-form').on('submit', function (event) {
+            event.preventDefault(); // Evita que el formulario se envíe de manera tradicional
+            Blueprint.actualizarPlanos(); // Llama a la función para actualizar los blueprints
+        });
+    });
+</script>
+
+
+<!-- Lienzo para dibujar con estilos Bootstrap -->
+<div class="container text-center">
+    <canvas id="myCanvas" width="300" height="300" style="border: 1px solid #333;"></canvas>
+</div>
+</body>
+
+</html>
+
